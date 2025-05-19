@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>ProjectManagerSimulatorClient</PackageId>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+   
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+   
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectManagerSimulatorApi\ProjectManagerSimulatorApi.csproj">
+      <PrivateAssets>all</PrivateAssets>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="GenerateClientCode" BeforeTargets="BeforeBuild">
+    <PropertyGroup>
+      <ApiProjectDir>../ProjectManagerSimulatorApi</ApiProjectDir>
+      <OpenApiSource>$(ApiProjectDir)/obj/ProjectManagerSimulatorApi.json</OpenApiSource>
+      <OpenApiDest>$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json</OpenApiDest>
+    </PropertyGroup>
+    <Copy SourceFiles="$(OpenApiSource)" DestinationFiles="$(OpenApiDest)" SkipUnchangedFiles="true" />
+    <Exec Command="$(NSwagExe) openapi2csclient /input:$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json /output:$(IntermediateOutputPath)/Client.cs" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)/Client.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

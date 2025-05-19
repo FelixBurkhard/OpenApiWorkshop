@@ -16,6 +16,25 @@ For older version you can use swashbuckle.
 
 [source](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0)
 
+## Auto Client Generator
+
+### NSwag
+
+creates client that can easily be packaged.
+`NSwag.CodeGeneration.CSharp` package.
+[source](https://github.com/RicoSuter/NSwag/wiki/CSharpClientGenerator)
+
+```xml
+  <Target Name="CopyOpenApiJson" AfterTargets="Build">
+    <PropertyGroup>
+      <ApiProjectDir>..\ProjectManagerSimulatorApi</ApiProjectDir>
+      <OpenApiSource>$(ApiProjectDir)\obj\ProjectManagerSimulatorApi.json</OpenApiSource>
+      <OpenApiDest>$(OutDir)\ProjectManagerSimulatorApi.json</OpenApiDest>
+    </PropertyGroup>
+    <Copy SourceFiles="$(OpenApiSource)" DestinationFiles="$(OpenApiDest)" SkipUnchangedFiles="true" />
+  </Target>
+```
+
 ## Documentation
 
 use [Attributes](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-9.0&tabs=controllers) to add documentation of your API directly into your code
