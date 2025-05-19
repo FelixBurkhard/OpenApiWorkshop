@@ -16,6 +16,12 @@ For older version you can use swashbuckle.
 
 [source](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0)
 
+## Documentation
+
+use [Attributes](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-9.0&tabs=controllers) to add documentation of your API directly into your code
+Hint to use reflection to write tests that fail if a endpoint is undocumented.
+probably could use custom analyzer for this as well.
+
 ## Open Points
 
 - [Spectral](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0#lint-generated-openapi-documents-with-spectral) for linting?
