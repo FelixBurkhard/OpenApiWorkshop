@@ -1,4 +1,4 @@
-name: Publish Client NuGet Package
+name: Publish Kiota Client NuGet Package
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Build API
-        run: dotnet build ProjectManagerSimulator/ProjectManagerSimulator.csproj --configuration Release -o ./ApiOutput
+        run: dotnet build ProjectManagerSimulatorApi/ProjectManagerSimulatorApi.csproj --configuration Release -o ./ApiOutput
 
       - uses: microsoft/setup-kiota@v0.5.0
 
