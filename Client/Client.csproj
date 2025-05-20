@@ -30,7 +30,7 @@
       <OpenApiDest>$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json</OpenApiDest>
     </PropertyGroup>
     <Copy SourceFiles="$(OpenApiSource)" DestinationFiles="$(OpenApiDest)" SkipUnchangedFiles="true" />
-    <Exec Command="$(NSwagExe_Net80) openapi2csclient /input:$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json /output:$(IntermediateOutputPath)/Client.cs" />
+    <Exec Command="$(NSwagExe_Net90) openapi2csclient /input:$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json /output:$(IntermediateOutputPath)/Client.cs" />
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)/Client.cs" />
     </ItemGroup>
