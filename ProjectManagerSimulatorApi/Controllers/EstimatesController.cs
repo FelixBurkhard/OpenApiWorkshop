@@ -8,6 +8,7 @@ namespace ProjectManagerSimulatorApi.Controllers;
 [Route("api/[controller]")]
 public class EstimatesController(EstimateRepository repository) : ControllerBase
 {
+    [EndpointName("GetAllEstimates")]
     [HttpGet]
     public ActionResult<IEnumerable<Estimate>> GetAll([FromQuery] Guid? projectId)
     {
@@ -19,6 +20,7 @@ public class EstimatesController(EstimateRepository repository) : ControllerBase
         return Ok(repository.GetAll());
     }
 
+    [EndpointName("CreateEstimate")]
     [HttpPost]
     public ActionResult<Estimate> Create([FromBody] Estimate estimate)
     {
@@ -29,6 +31,7 @@ public class EstimatesController(EstimateRepository repository) : ControllerBase
         return CreatedAtAction(null, null, estimate);
     }
 
+    [EndpointName("CreateEstimateBatch")]
     [HttpPost("batch")]
     public IActionResult CreateBatch([FromBody] IEnumerable<Estimate> estimates)
     {

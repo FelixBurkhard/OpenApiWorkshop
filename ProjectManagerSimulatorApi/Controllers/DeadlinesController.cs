@@ -11,6 +11,7 @@ namespace ProjectManagerSimulatorApi.Controllers;
 public class DeadlinesController(DeadlineRepository deadlineRepository, EstimateRepository estimateRepository) : ControllerBase
 {
     [EndpointSummary("Get all Deadlines")]
+    [EndpointName("GetAllDeadlines")]
     [HttpGet]
     public ActionResult<IEnumerable<Deadline>> GetAll()
     {
@@ -19,6 +20,7 @@ public class DeadlinesController(DeadlineRepository deadlineRepository, Estimate
     }
 
     [EndpointSummary("Gets a single Deadline for a specific project")]
+    [EndpointName("GetAllDeadlinesByProjectId")]
     [HttpGet("{projectId:guid}")]
     public ActionResult<Deadline> GetByProjectId([Description("This is the project ID the endpoint filteres the deadlines for.")] Guid projectId)
     {
@@ -30,6 +32,7 @@ public class DeadlinesController(DeadlineRepository deadlineRepository, Estimate
 
     [EndpointSummary("Calculates and saves a new deadline based on the estimates that exist for the project.")]
     [EndpointDescription("The calculation takes the mean of all available Estimates and multiplies it by 0.8")]
+    [EndpointName("CalculateNewDeadline")]
     [HttpPost("calculate")]
     public ActionResult<Deadline> Calculate([FromBody] CalculateDeadlineRequest request)
     {
@@ -45,6 +48,7 @@ public class DeadlinesController(DeadlineRepository deadlineRepository, Estimate
         return CreatedAtAction(nameof(GetByProjectId), new { projectId = deadline.ProjectId }, deadline);
     }
 
+    [EndpointName("UpdateDeadline")]
     [HttpPut("{projectId:guid}")]
     public IActionResult Update(Guid projectId, [FromBody] UpdateDeadlineRequest request)
     {
