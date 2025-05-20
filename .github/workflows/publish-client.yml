@@ -12,7 +12,7 @@ jobs:
     permissions:
       packages: write
       contents: read
-      
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
         run: dotnet build OpenApiWorkshop.sln --configuration Release --no-restore --no-incremental
 
       - name: Pack
-        run: dotnet pack Client/Client.csproj --configuration Release --no-build --output ./nupkg --version-suffix "preview"
+        run: dotnet pack Client/Client.csproj --configuration Release --no-build --output ./nupkg --version-suffix "alpha"
 
       - name: Publish to GitHub Packages
         run: dotnet nuget push ./nupkg/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
