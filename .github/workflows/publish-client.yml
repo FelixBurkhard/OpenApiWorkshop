@@ -9,7 +9,8 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      packages: write
 
     steps:
       - name: Checkout code
@@ -27,12 +28,7 @@ jobs:
         run: dotnet build OpenApiWorkshop.sln --configuration Release --no-restore --no-incremental
 
       - name: Pack
-        run: dotnet pack Client/Client.csproj --configuration Release --no-build --output ./nupkg
-
-      # - name: Add GitHub Packages source
-      #   run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        run: dotnet pack Client/Client.csproj --configuration Release --no-build --output ./nupkg --version-suffix "preview"
 
       - name: Publish to GitHub Packages
-        # env:
-          # NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet nuget push ./nupkg/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
