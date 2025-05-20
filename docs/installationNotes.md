@@ -35,6 +35,14 @@ creates client that can easily be packaged.
   </Target>
 ```
 
+## Publish nuget feed
+
+See github action file.
+Add new package source in VS.
+if asked for credentials use your github username and a generated github PAT with package read permissions as password.
+If you messed it up go to Control Panel\User Accounts\Credential Manager and change it or just delte it to get another prompt.
+Change namespace and class name via commandline of nswag.
+
 ## Documentation
 
 use [Attributes](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-9.0&tabs=controllers) to add documentation of your API directly into your code
