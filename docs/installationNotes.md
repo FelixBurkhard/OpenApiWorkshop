@@ -53,3 +53,12 @@ probably could use custom analyzer for this as well.
 
 - [Spectral](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0#lint-generated-openapi-documents-with-spectral) for linting?
 - Wirklich als webapp hosten oder besser lokale doku mit [Scalar](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0#use-scalar-for-interactive-api-documentation)
+
+github [supports spoilers](https://github.com/dear-github/dear-github/issues/166#issuecomment-2615537189):
+
+```md
+<details>
+  <summary>Click to expand</summary>
+  whatever
+</details>
+```
