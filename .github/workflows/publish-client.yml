@@ -32,8 +32,8 @@ jobs:
         run: npm install -g nswag
 
       - name: Generate Client
-        run: nswag openapi2csclient /input:./ApiOutput/ProjectManagerSimulatorApi.json /namespace:ProjectManagerSimulatorClient /output:./Client/Client.cs /clientClassName:ProjectManagerSimulatorClient /namespace:ProjectManager.Simulator /generateOptionalParameters:true
-
+        run: nswag openapi2csclient /input:./ApiOutput/ProjectManagerSimulatorApi.json /output:./Client/Client.cs /namespace:ProjectManagerSimulatorClient  /classname:ProjectManagerSimulatorClient /generateOptionalParameters:true
+      
       - name: Pack
         run: dotnet pack Client/Client.csproj --configuration Release --output ./nupkg --version-suffix "alpha"
 
