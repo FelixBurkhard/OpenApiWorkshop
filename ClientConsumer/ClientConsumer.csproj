@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Kiota.ProjectManagerSimulatorClient" Version="1.0.0-alpha" />
     <PackageReference Include="ProjectManagerSimulatorClient" Version="1.0.2-alpha" />
   </ItemGroup>
 
