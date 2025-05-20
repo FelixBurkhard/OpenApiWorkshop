@@ -20,10 +20,10 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore Client/Client.csproj
+        run: dotnet restore OpenApiWorkshop.sln
 
       - name: Build
-        run: dotnet build Client/Client.csproj --configuration Release --no-restore --no-incremental
+        run: dotnet build OpenApiWorkshop.sln --configuration Release --no-restore --no-incremental
 
       - name: Pack
         run: dotnet pack Client/Client.csproj --configuration Release --no-build --output ./nupkg
