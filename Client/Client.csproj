@@ -25,7 +25,7 @@
 
   <Target Name="GenerateClientCode" BeforeTargets="BeforeBuild">
     <PropertyGroup>
-      <ApiProjectDir>../ProjectManagerSimulatorApi</ApiProjectDir>
+      <ApiProjectDir>$(MSBuildProjectDirectory)/../ProjectManagerSimulatorApi</ApiProjectDir>
       <OpenApiSource>$(ApiProjectDir)/obj/ProjectManagerSimulatorApi.json</OpenApiSource>
       <OpenApiDest>$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json</OpenApiDest>
     </PropertyGroup>

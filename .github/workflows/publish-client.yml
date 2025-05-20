@@ -23,7 +23,7 @@ jobs:
         run: dotnet restore Client/Client.csproj
 
       - name: Build
-        run: dotnet build Client/Client.csproj --configuration Release --no-restore
+        run: dotnet build Client/Client.csproj --configuration Release --no-restore --no-incremental
 
       - name: Pack
         run: dotnet pack Client/Client.csproj --configuration Release --no-build --output ./nupkg
