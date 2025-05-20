@@ -22,22 +22,16 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore OpenApiWorkshop.sln
-
       - name: Build API
-        run: dotnet build ProjectManagerSimulator/ProjectManagerSimulator.csproj --configuration Release --no-restore -o ./ApiOutput
+        run: dotnet build ProjectManagerSimulator/ProjectManagerSimulator.csproj --configuration Release -o ./ApiOutput
 
       - uses: microsoft/setup-kiota@v0.5.0
 
       - name: Generate Kiota Client
         run: kiota generate -d ./ApiOutput/ProjectManagerSimulatorApi.json -o ./KiotaClient -l csharp -c SimulatorClient -n Simulator
 
-      - name: Build Kiota Client
-        run: dotnet build KiotaClient/KiotaClient.csproj --configuration Release --no-restore
-
       - name: Pack
-        run: dotnet pack KiotaClient/KiotaClient.csproj --configuration Release --no-build --output ./nupkg --version-suffix "alpha"
+        run: dotnet pack KiotaClient/KiotaClient.csproj --configuration Release --output ./nupkg --version-suffix "alpha"
 
       - name: Publish to GitHub Packages
         run: dotnet nuget push ./nupkg/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
