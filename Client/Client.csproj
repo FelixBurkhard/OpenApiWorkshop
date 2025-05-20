@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>ProjectManagerSimulatorClient</PackageId>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,12 +25,14 @@
 
   <Target Name="GenerateClientCode" BeforeTargets="BeforeBuild">
     <PropertyGroup>
+      <ClientClassName>ProjectManagerSimulatorClient</ClientClassName>
+      <ClientNamespace>ProjectManager.Simulator</ClientNamespace>
       <ApiProjectDir>$(MSBuildProjectDirectory)/../ProjectManagerSimulatorApi</ApiProjectDir>
       <OpenApiSource>$(ApiProjectDir)/obj/ProjectManagerSimulatorApi.json</OpenApiSource>
       <OpenApiDest>$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json</OpenApiDest>
     </PropertyGroup>
     <Copy SourceFiles="$(OpenApiSource)" DestinationFiles="$(OpenApiDest)" SkipUnchangedFiles="true" />
-    <Exec Command="$(NSwagExe_Net90) openapi2csclient /input:$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json /output:$(IntermediateOutputPath)/Client.cs" />
+    <Exec Command="$(NSwagExe_Net90) openapi2csclient /input:$(IntermediateOutputPath)/ProjectManagerSimulatorApi.json /output:$(IntermediateOutputPath)/Client.cs /classname:$(ClientClassName) /namespace:$(ClientNamespace)" />
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)/Client.cs" />
     </ItemGroup>
