@@ -7,8 +7,8 @@ Check it out locally and copy this project inside it as inital commit.
 
 ### Dependencies
 
-- .NET9 SDK
-- node >= v18 (needed for npm packages)
+- .NET 9 SDK
+- Node.js >= v18 (needed for npm packages)
 
 ## Instructions - Generate OpenAPI Specification File (Time needed: ???)
 
@@ -20,15 +20,15 @@ These steps will show you how you can create the file during runtime and as a bu
 There are two relevant packages.
 `Microsoft.AspNetCore.OpenApi` builds and serves the `openapi.json` during runtime.
 `Microsoft.Extensions.ApiDescription.Server` creates the `openapi.json` during build time so it can be used in the pipelines.
-The later one puts the file in the `obj` folder and its named `{ProjectName}.json` by default.
+The latter one puts the file in the `obj` folder, and it's named `{ProjectName}.json` by default.
 
 Follow these [steps](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/aspnetcore-openapi?view=aspnetcore-9.0&tabs=visual-studio%2Cvisual-studio-code#configure-openapi-document-generation) to create the `openapi.json` and serve it during runtime.
 Then build and run the API and try to navigate to the specification file to make sure it is actually served.
 
 Then follow these [steps](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/aspnetcore-openapi?view=aspnetcore-9.0&tabs=visual-studio%2Cvisual-studio-code#generate-openapi-documents-at-build-time) to create the specification file during the build process.
 
-Add the following to the API's `.csproj` file to copy the specification file to the project build output directoy.
-Its easier to use it from the pipeline later if we copy it to the output folder.
+Add the following to the API's `.csproj` file to copy the specification file to the project build output directory.
+It's easier to use it from the pipeline later if we copy it to the output folder.
 
 ```XML
 <PropertyGroup>
@@ -55,8 +55,8 @@ Next install NSwag as global npm package using `npm install -g nswag`.
 You can check out the NSwag CLI documentation [here](https://github.com/RicoSuter/NSwag/wiki/CommandLine).
 Because we want to generate C# Client we need to use the `openapi2csclient` command.
 We need to specify at least two parameters.
-The first is `/input` to specifiy which OpenApi Specification file we want to generate a client for.
-The next one is `/output` to specifiy where the generated file should be created.
+The first is `/input` to specify which OpenAPI Specification file we want to generate a client for.
+The next one is `/output` to specify where the generated file should be created.
 It is highly recommended to also specify the `/classname` and `/namespace` parameters, as the default naming of the class and the namespace are not very good.
 
 The complete command should look something like this:
@@ -71,9 +71,9 @@ Either by being very careful or by just adding the file to your `.gitignore`.
 We don't want the generated code to be checked into git as we will dynamically create it using a github action later.
 Try to build the client project.
 You will see that it will fail complaining about missing dependencies.
-Thats because the generated code has a dependency to a nuget package that has not been added to the project file.
-So add the `Newtonsoft.Json` package as dependecy.
-Try to build the project again and it should compile sucessfully now.
+That's because the generated code has a dependency on a NuGet package that has not been added to the project file.
+So add the `Newtonsoft.Json` package as a dependency.
+Try to build the project again, and it should compile successfully now.
 
 ### Publish Client SDK as nuget package using GitHub Actions
 
@@ -91,7 +91,7 @@ Steps 1-3 are basically what you have done locally already.
 You just need to convert it to a GitHub Action.
 This [documentation about the GitHub Packages Nuget Feed](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#publishing-a-package) in combination with the [Microsoft Documentation on how to publish Nuget Packages](https://learn.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli) should give you an idea on how to achieve steps 4 and 5.
 You can also try to publish the package locally first, but you will need a [GitHub Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to authenticate the request.
-Please be aware that you need to select the `classic` PAT when creating it because GitHub packages is not yet compatible with the newer version of PATs.
+Please be aware that you need to select the `classic` PAT when creating it because GitHub Packages is not yet compatible with the newer version of PATs.
 If you do try this make sure the PAT has the `package write` permission configured.
 
 <details>
@@ -194,8 +194,8 @@ They are added via the [Attributes](https://learn.microsoft.com/en-us/aspnet/cor
 
 If you want to combine your API Documentation with some more documentation about your project I recommend using [Docusaurus](https://docusaurus.io/).
 The first step is to create a new folder in the solution root directoy.
-Lets call it `docs`.
-Inside the docs folder run `npx create-docusaurus@latest sim-docs classic` to easily setup docusaurus with some generic documentation predefined.
+Let's call it `docs`.
+Inside the `docs` folder, run `npx create-docusaurus@latest sim-docs classic` to easily set up Docusaurus with some generic documentation predefined.
 You should select typescript as it will be easier for us to use later.
 To see how it looks just navigate inside the newly created `sim-docs` folder and run `npm run start`.
 
@@ -240,7 +240,7 @@ plugins: [
 }
 ```
 
-This essentially tells the plugin to look for the `ProjectManagerSimulatorApi.json` file in the docusaurus root folder and save the build artifacts in `docs/ProjectManagerSimulator`.
+This essentially tells the plugin to look for the `ProjectManagerSimulatorApi.json` file in the Docusaurus root folder and save the build artifacts in `docs/ProjectManagerSimulator`.
 
 Now add `"generate-api-docs": "docusaurus gen-api-docs all",` as script to you `package.json` and run it using `npm run generate-api-docs`.
 This will create the files docusaurus needs to create the documentation.
