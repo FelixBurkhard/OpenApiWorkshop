@@ -1,0 +1,40 @@
+name: Publish Client NuGet Package
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build API
+        run: dotnet build ProjectManagerSimulatorApi/ProjectManagerSimulatorApi.csproj --configuration Release -o ./ApiOutput
+
+      - uses: actions/setup-node@v4
+        name: install node
+
+      - name: copy openapi.json
+        run: cp ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/openapi/ProjectManagerSimulatorApi.json
+
+      - name: generate openapi docs
+        working-directory: ./docs/sim-docs
+        run: |
+          npm ci
+          npm run generate-openapi-docs
+          npm run 
+        
