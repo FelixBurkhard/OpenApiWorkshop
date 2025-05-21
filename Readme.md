@@ -178,12 +178,182 @@ This way you can just use VS as usual to start and debug your client application
 
 ## Instructions - Documentation Generation (Time needed: ???)
 
+Now we are able to easily call the API Endpoints from any Client.
+The next step is to give some documentation to the consumer so they know what to do and expect from your API.
+Of course we will also do this automatically.
+
 ### Use Spectral for a quick Documentation
+
+The easiest was to setup documentation is by using [Scalar](https://scalar.com/).
+Just follow this [quick instructions](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0#use-scalar-for-interactive-api-documentation) and see how easily you can create the documentation.
+You will notice that there already is some nice naming and a few description if you browse through the documentation.
+You can find them in the Controllers in the API project.
+They are added via the [Attributes](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-9.0&tabs=minimal-apis#include-openapi-metadata-for-endpoints) added to the endpoints.
 
 ### Setup Simple Docusaurus Documentation
 
+If you want to combine your API Documentation with some more documentation about your project I recommend using [Docusaurus](https://docusaurus.io/).
+The first step is to create a new folder in the solution root directoy.
+Lets call it `docs`.
+Inside the docs folder run `npx create-docusaurus@latest sim-docs classic` to easily setup docusaurus with some generic documentation predefined.
+You should select typescript as it will be easier for us to use later.
+To see how it looks just navigate inside the newly created `sim-docs` folder and run `npm run start`.
+
 ### Use OpenAPI Plugin to use Docusaurus for API Documentation
+
+The next step is to automatically create the API documentation for docusaurus.
+For this we will use the [OpenAPI Plugin](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs) for Docusaurus.
+Install it by running
+
+```shell
+npm install docusaurus-plugin-openapi-docs
+npm install docusaurus-theme-openapi-docs
+```
+
+Then add the configuration for the docusaurus plugin as seen in its [documentation](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#configuring-docusaurusconfigts-plugin-and-theme-usage) to the `docusaurus.config.ts` file
+
+```ts
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
+
+const config: Config = {
+    // more code here
+plugins: [
+    [
+      'docusaurus-plugin-openapi-docs',
+      {
+        id: "api", // plugin id
+        docsPluginId: "classic", // configured for preset-classic
+        config: {
+          projectManagerSimulator: {
+            specPath: "./ProjectManagerSimulatorApi.json",
+            outputDir: "docs/ProjectManagerSimulator",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          } satisfies OpenApiPlugin.Options,
+        }
+      },
+    ]
+  ],
+  themes: ["docusaurus-theme-openapi-docs"],
+  // more code here
+}
+```
+
+This essentially tells the plugin to look for the `ProjectManagerSimulatorApi.json` file in the docusaurus root folder and save the build artifacts in `docs/ProjectManagerSimulator`.
+
+Now add `"generate-api-docs": "docusaurus gen-api-docs all",` as script to you `package.json` and run it using `npm run generate-api-docs`.
+This will create the files docusaurus needs to create the documentation.
+Make again sure to not add the generated files to your git.
+
+You can run `npm run start` again to see the new API documentation.
+It should be available under the `Tutorial` tab in the top navbar and then in the `ProjectManagerSimulator` entry on the sidebar on the left.
 
 ### Publish the Docusaurus Documentation using GitHub Pages
 
+To make your documentation available we can use [GitHub Pages](https://pages.github.com/) to host it.
+Since we will use a GitHub Action to build the documentation files you first need to configure GitHub Pages to accept them.
+To do this navigate to your GitHub Project Settings > Pages and select `GitHub Actions` from the `Source` dropdown.
+
+Now we need to create a new Action that executes the following steps
+
+1. Build the API project to create the specification file
+2. Copy the specification file to the docusaurus root directory
+3. Use the Plugin to generate the documentation files
+4. Use docusaurus to build a webpage out of the documentation files
+5. Publish the webpage to GitHub Pages
+
+Steps 1-4 are what you did locally before.
+If you want to search to figure out yourself how to do step 5 I recommend trying to find a template on GitHub that shows the steps.
+
+<details>
+  <summary>Otherwise you can find my solution under this spoiler</summary>
+  
+  ```yml
+  name: Deploy API Docs
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build API
+        run: dotnet build ProjectManagerSimulatorApi/ProjectManagerSimulatorApi.csproj --configuration Release -o ./ApiOutput
+
+      - uses: actions/setup-node@v4
+        name: install node
+
+      - name: copy openapi.json
+        run: cp ./ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/ProjectManagerSimulatorApi.json
+
+      - name: generate openapi docs
+        working-directory: ./docs/sim-docs
+        run: |
+          npm ci
+          npm run generate-api-docs
+          npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: './docs/sim-docs/build'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+  ```
+
+</details>
+
+Now you can push your code and the pipeline should complete sucessfully.
+You should find your new website under
+`https://<githubUserName>.github.io/<RepositoryName>/`.
+You can also link it to your repository if you click the gear icon on the right side panel of your repository and tick the `Use your GitHub Pages website` checkbox.
+If you navigate to your website you will probably see an error message.
+This is because we need to configure docusaurus with your URL.
+
+You need to change some entries in your `docusuarus.config.ts` to
+
+```ts
+  url: 'https://<githubusername>.github.io',
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: '/<repositoryName>',
+
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: '<githubusername>', // Usually your GitHub org/user name.
+  projectName: '<repositoryName>', // Usually your repo name.
+```
+
+Push your code again and after the Action has completed you should see your documentation running just fine!
+
 ## Outlook
+
+TODO: Linting with [Spectral](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0)
