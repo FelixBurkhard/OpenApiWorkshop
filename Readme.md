@@ -60,6 +60,20 @@ probably better to use typescript?
 Github Pages are public.
 If you need private pages you need to have github enterprise.
 
+need to set
+
+``` ts
+  url: 'https://felixburkhard.github.io',
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: '/OpenApiWorkshop',
+
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: 'FelixBurkhard', // Usually your GitHub org/user name.
+  projectName: 'OpenApiWorkshop', // Usually your repo name.
+```
+
 ## Open Points
 
 - [Spectral](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0#lint-generated-openapi-documents-with-spectral) for linting?
