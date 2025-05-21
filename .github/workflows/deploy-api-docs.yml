@@ -1,4 +1,4 @@
-name: Publish Client NuGet Package
+name: Deploy API Docs
 
 on:
   push:
@@ -10,8 +10,13 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     permissions:
-      packages: write
       contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
 
     steps:
       - name: Checkout code
@@ -35,6 +40,19 @@ jobs:
         working-directory: ./docs/sim-docs
         run: |
           npm ci
-          npm run generate-openapi-docs
-          npm run 
+          npm run generate-api-docs
+          npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: './docs/sim-docs/build'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
         

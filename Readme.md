@@ -50,7 +50,12 @@ Hint to use reflection to write tests that fail if a endpoint is undocumented.
 probably could use custom analyzer for this as well.
 
 ### Docosaurus
+
 `npx create-docusaurus@latest docs classic`
+probably better to use typescript?
+`npm install docusaurus-plugin-openapi-docs`
+`npm install docusaurus-theme-openapi-docs`
+
 [source](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#bootstrapping-from-template-new-docusaurus-site)
 Github Pages are public.
 If you need private pages you need to have github enterprise.
