@@ -50,9 +50,7 @@ Hint to use reflection to write tests that fail if a endpoint is undocumented.
 probably could use custom analyzer for this as well.
 
 ### Docosaurus
-you need to run this in WSL2.
-navigate to windows paths using `/mnt/<drive-letter>`
-`npx create-docusaurus@3.7.0 docs --package-manager yarn`
+`npx create-docusaurus@latest docs classic`
 [source](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#bootstrapping-from-template-new-docusaurus-site)
 Github Pages are public.
 If you need private pages you need to have github enterprise.
