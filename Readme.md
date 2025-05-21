@@ -49,6 +49,13 @@ use [Attributes](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/open
 Hint to use reflection to write tests that fail if a endpoint is undocumented.
 probably could use custom analyzer for this as well.
 
+### Docosaurus
+
+`npx create-docusaurus@3.7.0 docs --package-manager yarn`
+[source](https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#bootstrapping-from-template-new-docusaurus-site)
+Github Pages are public.
+If you need private pages you need to have github enterprise.
+
 ## Open Points
 
 - [Spectral](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/using-openapi-documents?view=aspnetcore-9.0#lint-generated-openapi-documents-with-spectral) for linting?
