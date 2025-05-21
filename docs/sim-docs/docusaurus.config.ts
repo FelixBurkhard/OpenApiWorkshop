@@ -73,7 +73,7 @@ const config: Config = {
         docsPluginId: "classic", // configured for preset-classic
         config: {
           projectManagerSimulator: {
-            specPath: "openapi/ProjectManagerSimulatorApi.json",
+            specPath: "./ProjectManagerSimulatorApi.json",
             outputDir: "docs/ProjectManagerSimulator",
             sidebarOptions: {
               groupPathsBy: "tag",

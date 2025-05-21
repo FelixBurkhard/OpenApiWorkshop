@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-publish:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,7 +34,7 @@ jobs:
         name: install node
 
       - name: copy openapi.json
-        run: cp ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/openapi/ProjectManagerSimulatorApi.json
+        run: cp ./ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/ProjectManagerSimulatorApi.json
 
       - name: generate openapi docs
         working-directory: ./docs/sim-docs
@@ -51,7 +51,7 @@ jobs:
         with:
           # Upload entire repository
           path: './docs/sim-docs/build'
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
